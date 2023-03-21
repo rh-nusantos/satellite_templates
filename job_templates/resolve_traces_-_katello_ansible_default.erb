@@ -1,0 +1,33 @@
+<%#
+name: Resolve Traces - Katello Ansible Default
+snippet: false
+template_inputs:
+- name: Traces search query
+  required: true
+  input_type: user
+  description: Search query to provide traces to resolve
+  advanced: false
+  value_type: plain
+  hidden_value: false
+model: JobTemplate
+job_category: Katello via Ansible
+description_format: Resolve Traces
+provider_type: Ansible
+kind: job_template
+organizations:
+- Home
+locations:
+- Brussels
+%>
+
+<%
+commands = @host.traces_helpers(search: input('Traces search query'))
+reboot = commands.delete('reboot')
+-%>
+<%= render_template(
+    'Run Command - Ansible Default',
+    :command => (commands.push('katello-tracer-upload')).join("\n")
+) %>
+<% if reboot %>
+    - reboot:
+<% end %>

@@ -1,0 +1,16 @@
+<%#
+name: AutoYaST entire SCSI disk
+snippet: false
+model: Ptable
+os_family: Suse
+organizations:
+- Home
+locations:
+- Brussels
+-%>
+  <partitioning  config:type="list">
+    <drive>
+      <device>/dev/sda</device>
+      <use>all</use>
+    </drive>
+  </partitioning>

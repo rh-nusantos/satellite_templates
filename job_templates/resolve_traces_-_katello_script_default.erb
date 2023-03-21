@@ -1,0 +1,32 @@
+<%#
+name: Resolve Traces - Katello Script Default
+snippet: false
+template_inputs:
+- name: Traces search query
+  required: false
+  input_type: user
+  description: Search query to provide traces to resolve
+  advanced: false
+  value_type: plain
+  hidden_value: false
+model: JobTemplate
+job_category: Katello
+description_format: Resolve Traces
+provider_type: script
+kind: job_template
+organizations:
+- Home
+locations:
+- Brussels
+%>
+
+<%
+commands = @host.traces_helpers(search: input('Traces search query'))
+reboot = commands.delete('reboot')
+-%>
+<% if reboot -%>
+shutdown -r +1
+<% else -%>
+<%= commands.join("\n") %>
+katello-tracer-upload
+<% end %>

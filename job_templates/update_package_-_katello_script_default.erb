@@ -1,0 +1,19 @@
+<%#
+name: Update Package - Katello Script Default
+snippet: false
+model: JobTemplate
+job_category: Katello
+description_format: Update package(s) %{package}
+foreign_input_sets:
+- exclude: action
+  include_all: true
+  template: Package Action - Script Default
+provider_type: script
+kind: job_template
+organizations:
+- Home
+locations:
+- Brussels
+%>
+
+<%= render_template('Package Action - Script Default', :action => 'update') %>

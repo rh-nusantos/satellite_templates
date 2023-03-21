@@ -1,0 +1,33 @@
+<%#
+name: Install Errata - Katello Script Default
+snippet: false
+template_inputs:
+- name: errata
+  required: true
+  input_type: user
+  description: A comma-separated list of errata to install
+  advanced: false
+  value_type: plain
+  hidden_value: false
+model: JobTemplate
+job_category: Katello
+description_format: Install errata %{errata}
+foreign_input_sets:
+- exclude: action,package
+  include_all: true
+  template: Package Action - Script Default
+provider_type: script
+kind: job_template
+organizations:
+- Home
+locations:
+- Brussels
+%>
+
+<% if @host.operatingsystem.family == 'Suse' -%>
+    <% advisories = input(:errata).split(',').join(' ') %>
+    <%= render_template('Package Action - Script Default', :action => 'install -n -t patch', :package => advisories) %>
+<% else %>
+    <% advisories = input(:errata).split(',').map { |e| "--advisory=#{e}" }.join(' ') %>
+    <%= render_template('Package Action - Script Default', :action => 'update-minimal', :package => advisories) %>
+<% end %>

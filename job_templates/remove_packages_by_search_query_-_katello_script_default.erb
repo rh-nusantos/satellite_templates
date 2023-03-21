@@ -1,0 +1,28 @@
+<%#
+name: Remove Packages by search query - Katello Script Default
+snippet: false
+template_inputs:
+- name: Packages search query
+  required: true
+  input_type: user
+  description: Filter criteria for packages to be removed.
+  advanced: false
+  value_type: plain
+  hidden_value: false
+model: JobTemplate
+job_category: Katello
+description_format: Remove packages %{Packages search query}
+provider_type: script
+kind: job_template
+organizations:
+- Home
+locations:
+- Brussels
+%>
+
+<% package_names = @host.package_names_for_job_template(
+  action: 'remove',
+  search: input('Packages search query')
+) -%>
+
+<%= render_template('Package Action - Script Default', :action => 'remove', :package => package_names.join(' ')) %>

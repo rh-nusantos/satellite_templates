@@ -1,0 +1,17 @@
+<%#
+name: FreeBSD (mfsBSD) PXELinux
+description: |-
+  The template to render PXELinux bootloader configuration for FreeBSD.
+  The output is deployed on the host's subnet TFTP proxy.
+snippet: false
+model: ProvisioningTemplate
+kind: PXELinux
+organizations:
+- Home
+-%>
+# foreman_url=<%= foreman_url('provision') %>
+DEFAULT freebsd
+
+LABEL freebsd
+    KERNEL memdisk
+    APPEND initrd=<%= @initrd %> harddisk raw

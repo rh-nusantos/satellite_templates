@@ -1,0 +1,23 @@
+<%#
+name: Change content source
+snippet: false
+model: JobTemplate
+job_category: Katello
+description_format: Configure subscription manager to new content source
+provider_type: script
+kind: job_template
+organizations:
+- Home
+locations:
+- Brussels
+%>
+
+#!/bin/sh
+
+<%= change_content_source(@host, foreman_server_ca_cert) %>
+
+if [ -f /etc/yggdrasil/config.toml ]; then
+  cp /etc/yggdrasil/config.toml /etc/yggdrasil/config.toml.bak
+  export YGGDRASIL_RESTART_DELAY=10
+  <%= snippet 'remote_execution_pull_setup' %>
+fi
